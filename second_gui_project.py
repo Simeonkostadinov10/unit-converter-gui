@@ -12,13 +12,16 @@ def hours_to_time(hours):
     seconds = hours * 3600
     return minutes, seconds
 
+def fahrenheit_to_celsius(fahrenheit):
+    return (fahrenheit - 32) * 5 / 9
+
 
 class converterToMilesApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
         self.title("Miles converter")
-        self.geometry("520x450")
+        self.geometry("450x400")
         self.resizable(False, False)
 
 
@@ -28,7 +31,7 @@ class converterToMilesApp(ctk.CTk):
         # Падащо меню за избор на режим
         self.mode_option = ctk.CTkOptionMenu(
             self,
-            values=["Км към Мили", "Часове към Мин/Сек"],
+            values=["Км към Мили", "Часове към Мин/Сек","Фаренхайт към Целзий"],
             command=self.update_placeholder,
             width=320
         )
@@ -49,8 +52,10 @@ class converterToMilesApp(ctk.CTk):
     def update_placeholder(self, choice):
         if choice == "Км към Мили":
             self.entry.configure(placeholder_text="Въведи километри")
-        else:
+        elif choice == "Часове към Мин/Сек":
             self.entry.configure(placeholder_text="Въведи часове")
+        elif choice == "Фаренхайт към Целзий":
+            self.entry.configure(placeholder_text="Въведи градуси (°F)")
 
     def convert(self):
         raw_val = self.entry.get().strip()
@@ -68,9 +73,12 @@ class converterToMilesApp(ctk.CTk):
             if mode == "Км към Мили":
                 miles = kilo_to_miles(val)
                 self.result.insert("1.0", f"{val} км = {miles:.2f} мили")
-            else:
+            elif mode == "Часове към Мин/Сек":
                 mins, secs = hours_to_time(val)
                 self.result.insert("1.0", f"{val} ч. = {mins:.0f} мин ({secs:.0f} сек)")
+            elif mode == "Фаренхайт към Целзий":
+                celsius = fahrenheit_to_celsius(val)
+                self.result.insert("1.0", f"{val}°F = {celsius:.2f}°C")
 
         except ValueError:
             messagebox.showerror("Грешка", "Въведената стойност трябва да е число!")
