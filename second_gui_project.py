@@ -72,6 +72,8 @@ class converterToMilesApp(ctk.CTk):
         self.result = ctk.CTkTextbox(self,width = 320,height = 80)
         self.result.pack(pady=5)
 
+        self.bind("<Return>", lambda event: self.convert())
+
     def update_placeholder(self, choice):
         if self.is_reversed is False:
             if choice == "Км към Мили":
